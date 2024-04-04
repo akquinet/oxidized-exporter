@@ -1,0 +1,9 @@
+docs/
+README.md
+Dockerfile
+.git
+.gitattributes
+.gitignore
+.github
+oxidized-exporter
+.venv

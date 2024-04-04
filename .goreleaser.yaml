@@ -1,0 +1,48 @@
+---
+project_name: oxidized-exporter
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+builds:
+  - env:
+      - CGO_ENABLED=0
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    # ldflags:
+    #   - -s
+    #   - -w
+    goarch:
+      - amd64
+      - arm64
+    goos:
+      - linux
+archives:
+  - format: binary
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
+  algorithm: sha256
+release:
+  draft: false
+changelog:
+  skip: true
+nfpms:
+  - package_name: "oxidized-exporter"
+    maintainer: rwxd <git@rwxd.de>
+    description: "Oxidzed Prometheus Exporter to expose metrics from oxidized"
+    formats:
+      - deb
+      - rpm
+upx:
+  - enabled: true
+    # Valid options are from '1' (faster) to '9' (better), and 'best'.
+    compress: best
+    # Whether to try LZMA (slower).
+    lzma: true
+    # Whether to try all methods and filters (slow).
+    brute: false
+    goos:
+      - linux

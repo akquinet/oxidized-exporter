@@ -31,7 +31,6 @@ jobs:
   container:
     runs-on: ubuntu-latest
     needs:
-      - test
       - pre-commit
     steps:
       - name: Check out the repo

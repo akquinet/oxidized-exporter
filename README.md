@@ -91,6 +91,8 @@ Flags:
 
 # run against an oxidized instance with basic authentication
 $ oxidized-exporter --url "https://oxidized.mydomain.com" -u myuser -p mypass --verbose
+
+$ curl localhost:8080/metrics
 ```
 
 ## Prometheus Configuration

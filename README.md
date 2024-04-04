@@ -2,8 +2,7 @@
 
 ## Description
 
-This exporter exposes metrics from Oxidized, a popular network device configuration backup tool.  
-The exporter allows to monitor various aspects of your Oxidized setup, including device status, backup information, and config metrics.
+This exporter provides access to metrics sourced from Oxidized, a widely-used tool for backing up network device configurations. With this exporter, you can monitor diverse aspects of your Oxidized setup, encompassing device status, backup details, and configuration metrics.
 
 ### Metrics
 - oxidized_status
@@ -32,7 +31,7 @@ Download the latest binary, RPM, or DEB package for Linux from the [releases](ht
 Clone the repository and build the exporter:
 
 ```bash
-git clone htttps://github.com/akquinet/oxidized-exporter.git /tmp/oxidized-exporter
+git clone https://github.com/akquinet/oxidized-exporter.git /tmp/oxidized-exporter
 cd /tmp/oxidized-exporter
 GOOS=linux GOARCH=amd64 CGO_ENALD=0 go build -o oxidized-exporter
 ```

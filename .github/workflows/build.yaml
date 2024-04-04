@@ -20,11 +20,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Setup
-        run: make setup
-
-      - name: Run pre-commit
-        run: make pre-commit-all
+      - uses: pre-commit/action@v3.0.1
         env:
           SKIP: "no-commit-to-branch"
 

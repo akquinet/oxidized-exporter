@@ -78,6 +78,10 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
       - name: Generate a token
         id: generate_token
         uses: actions/create-github-app-token@v1

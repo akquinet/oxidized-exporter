@@ -2,7 +2,7 @@
 
 ## Description
 
-This exporter exposes metrics from Oxidized, a popular network device configuration backup tool.
+This exporter exposes metrics from Oxidized, a popular network device configuration backup tool.  
 The exporter allows to monitor various aspects of your Oxidized setup, including device status, backup information, and config metrics.
 
 ### Metrics

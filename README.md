@@ -2,23 +2,34 @@
 
 ## Description
 
-Oxidized Prometheus Exporter to expose metrics from oxidized.
+This exporter exposes metrics from Oxidized, a popular network device configuration backup tool.
+The exporter allows to monitor various aspects of your Oxidized setup, including device status, backup information, and config metrics.
 
 ### Metrics
-- oxidized_status: Status of oxidized connection, 1 = success, 0 = error
-- oxidized_exporter_collect_duration: Time taken to collect metrics in ms  
-- oxidized_device_status: Status of oxidized device, 2 = success, 1 = never, 0 = no connection
-- oxidized_device_last_backup_time: Time of last backup in seconds
-- oxidized_device_last_backup_start: Start time of last backup as unix timestamp
-- oxidized_device_last_backup_end: End time of last backup as unix timestamp
-- oxidized_device_last_backup_status: Status of last backup, 2 = success, 1 = error
-- oxidized_device_config_size: Size of the device config in bytes
-- oxidized_device_config_lines: Number of lines in the device config
+- oxidized_status
+- oxidized_exporter_collect_duration
+- oxidized_device_status
+- oxidized_device_last_backup_time
+- oxidized_device_last_backup_start
+- oxidized_device_last_backup_end
+- oxidized_device_last_backup_status
+- oxidized_device_config_size
+- oxidized_device_config_lines
 
 ## Installation
-Under [releases](https://github.com/akquinet/oxidized-exporter/releases), you can find the latest binary, rpm & deb for Linux.
 
-Alternatively, you can build the exporter yourself:
+You can install the Oxidized Prometheus Exporter either by downloading pre-built binaries, building it from the source, or by using a pre-built container.
+
+The exporter should run behind a reverse proxy, as it does not support TLS and authentication!
+
+### Binary
+
+Download the latest binary, RPM, or DEB package for Linux from the [releases](https://github.com/akquinet/oxidized-exporter/releases) section.
+
+
+### Build from source
+
+Clone the repository and build the exporter:
 
 ```bash
 git clone htttps://github.com/akquinet/oxidized-exporter.git /tmp/oxidized-exporter
@@ -30,7 +41,7 @@ GOOS=linux GOARCH=amd64 CGO_ENALD=0 go build -o oxidized-exporter
 
 A container image is available under [packages](https://github.com/akquinet/oxidized-exporter/pkgs/container/oxidized-exporter).
 
-Example docker-compose configuration where the exporter is in the same network as oxidized:
+You can use Docker Compose to deploy the exporter alongside Oxidized:
 
 ```yaml
 ---
@@ -68,11 +79,11 @@ services:
 
 ## Usage
 
-All options can be set via command line arguments or environment variables.
-`OXIDIZED_EXPORTER` is the prefix for all environment variables.
+The exporter supports various configuration options via command-line arguments or environment variables.  
+Prefix all environment variables with OXIDIZED_EXPORTER.
 
 ```bash
-# show all available options
+# Show all available options
 $ oxidized-exporter --help
 Oxidized exporter for Prometheus
 
@@ -89,13 +100,14 @@ Flags:
   -u, --user string   Username for oxidized API
   -v, --verbose       Enable verbose logging
 
-# run against an oxidized instance with basic authentication
+# Run against an Oxidized instance with basic authentication
 $ oxidized-exporter --url "https://oxidized.mydomain.com" -u myuser -p mypass --verbose
 
 $ curl localhost:8080/metrics
 ```
 
 ## Prometheus Configuration
+Integrate the exporter into Prometheus using the following configuration:
 
 ```yaml
 - job_name: "oxidized_exporter"
@@ -111,7 +123,8 @@ $ curl localhost:8080/metrics
 ```
 
 ## Grafana Dashboard
-A example Grafana dashboard is available under [docs/grafana-dashboard.json](docs/grafana-dashboard.json). It can be imported into Grafana.
+A example Grafana dashboard is available under [docs/grafana-dashboard.json](docs/grafana-dashboard.json), offering insights into various metrics.
+Import this dashboard into Grafana for visualization.
 
 ![Grafana Dashboard](docs/grafana-dashboard.png)
 

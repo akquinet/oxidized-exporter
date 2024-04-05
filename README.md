@@ -17,7 +17,7 @@ This exporter provides access to metrics sourced from Oxidized, a widely-used to
 
 ## Installation
 
-You can install the Oxidized Prometheus Exporter either by downloading pre-built binaries, building it from the source, or by using a pre-built container.
+You can install the Oxidized Prometheus Exporter either by downloading pre-built binaries, building it from source, or by using a pre-built container.
 
 The exporter should run behind a reverse proxy, as it does not support TLS and authentication!
 

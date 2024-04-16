@@ -33,7 +33,7 @@ Clone the repository and build the exporter:
 ```bash
 git clone https://github.com/akquinet/oxidized-exporter.git /tmp/oxidized-exporter
 cd /tmp/oxidized-exporter
-GOOS=linux GOARCH=amd64 CGO_ENALD=0 go build -o oxidized-exporter
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o oxidized-exporter
 ```
 
 ### Container

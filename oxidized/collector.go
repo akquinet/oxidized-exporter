@@ -81,6 +81,11 @@ func (c *OxidizedCollector) Collect(ch chan<- prometheus.Metric) {
 	// oxidized reachable
 	ch <- prometheus.MustNewConstMetric(c.oxidizedStatusMetric, prometheus.GaugeValue, 1)
 
+	onlyDefaultGroup := c.oxidizedClient.OnlyDefaultGroup(devices)
+	if onlyDefaultGroup {
+		slog.Info("Oxidized has only devices of group default")
+	}
+
 	semaphore := make(chan struct{}, 100)
 	wg := sync.WaitGroup{}
 	for _, device := range devices {
@@ -150,7 +155,7 @@ func (c *OxidizedCollector) Collect(ch chan<- prometheus.Metric) {
 				ch <- prometheus.MustNewConstMetric(c.deviceLastBackupStatusMetric, prometheus.GaugeValue, deviceLastBackupStatus, device.FullName, device.Name, device.Group, device.Model)
 			}
 
-			configStat, err := c.oxidizedClient.GetConfigStats(device.Group, device.Name)
+			configStat, err := c.oxidizedClient.GetConfigStats(device.Group, device.Name, onlyDefaultGroup)
 			if err != nil {
 				slog.Error("Could not get config stats", "error", err, "device", device.FullName)
 			} else {

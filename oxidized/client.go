@@ -123,8 +123,15 @@ func (c *OxidizedClient) GetStatus() ([]DeviceStat, error) {
 	return stats, nil
 }
 
-func (c *OxidizedClient) GetConfigStats(group string, name string) (*ConfigStat, error) {
-	req, err := http.NewRequest("GET", c.Url+"/"+"node/fetch/"+group+"/"+name, nil)
+func (c *OxidizedClient) GetConfigStats(group string, name string, onlyDefaulGroup bool) (*ConfigStat, error) {
+	var req *http.Request
+	var err error
+
+	if onlyDefaulGroup {
+		req, err = http.NewRequest("GET", c.Url+"/"+"node/fetch/"+name, nil)
+	} else {
+		req, err = http.NewRequest("GET", c.Url+"/"+"node/fetch/"+group+"/"+name, nil)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -146,6 +153,22 @@ func (c *OxidizedClient) GetConfigStats(group string, name string) (*ConfigStat,
 		Size:  len(b),
 		Lines: bytes.Count(b, []byte("\n")),
 	}, nil
+}
+
+// OnlyDefaultGroup returns true if the oxidized instance has only
+// devices of the default group
+func (o *OxidizedClient) OnlyDefaultGroup(devices []Device) bool {
+	groups := make(map[string]struct{})
+	for _, device := range devices {
+		groups[device.Group] = struct{}{}
+	}
+
+	if len(groups) == 1 {
+		if _, ok := groups["default"]; ok {
+			return true
+		}
+	}
+	return false
 }
 
 // ConvertOixidzedTimeTo8601 converts from 2019-11-19 14:00:00 CET

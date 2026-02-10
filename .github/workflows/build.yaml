@@ -99,6 +99,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
       - pre-commit
+      - container
     steps:
       - name: Checkout
         uses: actions/checkout@v4

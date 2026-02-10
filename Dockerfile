@@ -1,4 +1,4 @@
-FROM docker.io/golang:1.25-alpine as builder
+FROM docker.io/golang:1.26-alpine as builder
 
 # Set destination for COPY
 WORKDIR /app

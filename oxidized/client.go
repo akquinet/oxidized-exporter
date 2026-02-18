@@ -69,7 +69,7 @@ func NewOxidizedClient(url, username, password string) *OxidizedClient {
 }
 
 // get makes a GET request to the given path and decodes the response into v.
-func (c *OxidizedClient) get(path string, v interface{}) error {
+func (c *OxidizedClient) get(path string, v any) error {
 	req, err := http.NewRequest("GET", c.Url+"/"+path+"?format=json", nil)
 	if err != nil {
 		return err

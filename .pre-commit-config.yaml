@@ -15,10 +15,33 @@ repos:
       - id: trailing-whitespace
         args: ["--markdown-linebreak-ext=md"]
 
-  - repo: https://github.com/dnephin/pre-commit-golang
-    rev: v0.5.1
+  - repo: local
     hooks:
       - id: go-fmt
+        name: gofmt
+        entry: gofmt -l -w
+        language: system
+        files: \.go$
       - id: go-vet
+        name: go vet
+        entry: go vet ./...
+        language: system
+        files: \.go$
+        pass_filenames: false
       - id: go-mod-tidy
+        name: go mod tidy
+        entry: go mod tidy
+        language: system
+        files: (^|/)go\.(mod|sum)$
+        pass_filenames: false
       - id: go-build
+        name: go build
+        entry: go build ./...
+        language: system
+        files: \.go$
+        pass_filenames: false
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: "v1.32.0"
+    hooks:
+      - id: zizmor

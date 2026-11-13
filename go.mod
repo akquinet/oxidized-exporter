@@ -1,6 +1,6 @@
 module github.com/akquinet/oxidized-exporter
 
-go 1.26
+go 1.27
 
 require (
 	github.com/prometheus/client_golang v1.23.2

@@ -1,9 +1,12 @@
 package cmd
 
 import (
+	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/akquinet/oxidized-exporter/oxidized"
 	"github.com/prometheus/client_golang/prometheus"
@@ -16,7 +19,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "oxidized-exporter",
 	Short: "Oxidized exporter for Prometheus",
-	Run: func(_ *cobra.Command, _ []string) {
+	RunE: func(cmd *cobra.Command, _ []string) error {
 		logLevel := slog.LevelWarn
 		if viper.GetBool("debug") {
 			logLevel = slog.LevelDebug
@@ -34,13 +37,25 @@ var rootCmd = &cobra.Command{
 		collector := oxidized.NewOxidizedCollector(oxidizedClient)
 		prometheus.MustRegister(collector)
 
-		slog.Info("Listening", "address", viper.GetString("listen"), "path", viper.GetString("path"))
+		listen := viper.GetString("listen")
+		if viper.IsSet("port") {
+			if viper.IsSet("listen") {
+				return errors.New("--port and --listen are mutually exclusive, use --listen")
+			}
+			listen = ":" + strconv.Itoa(viper.GetInt("port"))
+			if !cmd.Flags().Changed("port") {
+				slog.Warn("OXIDIZED_EXPORTER_PORT is deprecated, use OXIDIZED_EXPORTER_LISTEN instead")
+			}
+		}
+
+		slog.Info("Listening", "address", listen, "path", viper.GetString("path"))
 		http.Handle(viper.GetString("path"), promhttp.Handler())
-		if err := http.ListenAndServe(viper.GetString("listen"), nil); err != nil {
-			slog.Warn("Prometheus webserver ended not normally", "error", err)
+		if err := http.ListenAndServe(listen, nil); err != nil {
+			return fmt.Errorf("prometheus webserver ended: %w", err)
 		}
 
 		slog.Info("Finished process")
+		return nil
 	},
 }
 
@@ -55,6 +70,10 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().String("listen", ":8080", "TCP address and port to listen on")
+	rootCmd.Flags().Int("port", 8080, "Port to listen on (deprecated, use --listen)")
+	if err := rootCmd.Flags().MarkDeprecated("port", "use --listen instead"); err != nil {
+		panic(err)
+	}
 	rootCmd.Flags().String("path", "/metrics", "Path to expose metrics on")
 	rootCmd.Flags().StringP("url", "U", "http://localhost:8888", "URL of oxidized API")
 	rootCmd.Flags().StringP("user", "u", "", "Username for oxidized API")

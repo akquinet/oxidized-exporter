@@ -92,7 +92,7 @@ Usage:
 Flags:
   -d, --debug           Enable debug logging
   -h, --help            help for oxidized-exporter
-      --listen string   Address to listen on (default ":8080")
+      --listen string   TCP address and port to listen on (default ":8080")
   -p, --pass string     Password for oxidized API
       --path string     Path to expose metrics on (default "/metrics")
   -U, --url string      URL of oxidized API (default "http://localhost:8888")
@@ -104,6 +104,10 @@ $ oxidized-exporter --url "https://oxidized.mydomain.com" -u myuser -p mypass --
 
 $ curl localhost:8080/metrics
 ```
+
+`--port` and `OXIDIZED_EXPORTER_PORT` are deprecated but still accepted. They are
+equivalent to `--listen :<port>`. Use `--listen` to bind a specific address, for
+example `--listen 127.0.0.1:8080` or `--listen '[::1]:8080'`.
 
 ## Prometheus Configuration
 Integrate the exporter into Prometheus using the following configuration:

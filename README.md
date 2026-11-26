@@ -90,14 +90,14 @@ Usage:
   oxidized-exporter [flags]
 
 Flags:
-  -d, --debug         Enable debug logging
-  -h, --help          help for oxidized-exporter
-  -p, --pass string   Password for oxidized API
-      --path string   Path to expose metrics on (default "/metrics")
-      --port int      Port to listen on (default 8080)
-  -U, --url string    URL of oxidized API (default "http://localhost:8888")
-  -u, --user string   Username for oxidized API
-  -v, --verbose       Enable verbose logging
+  -d, --debug           Enable debug logging
+  -h, --help            help for oxidized-exporter
+      --listen string   Address to listen on (default ":8080")
+  -p, --pass string     Password for oxidized API
+      --path string     Path to expose metrics on (default "/metrics")
+  -U, --url string      URL of oxidized API (default "http://localhost:8888")
+  -u, --user string     Username for oxidized API
+  -v, --verbose         Enable verbose logging
 
 # Run against an Oxidized instance with basic authentication
 $ oxidized-exporter --url "https://oxidized.mydomain.com" -u myuser -p mypass --verbose
